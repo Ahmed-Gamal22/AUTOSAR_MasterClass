@@ -1,0 +1,67 @@
+--> Communication Stack Startup Sequence
+1- ComM
+Std_ReturnType CanSM_RequestComMode(NetworkHandleType network,
+									ComM_ModeType ComM_Mode)
+2- CanSM
+Std_ReturnType CanIf_SetControllerMode(uint8 ControllerId,
+									   Can_ControllerStateType ControllerMode)
+Std_ReturnType CanIf_SetTrcvMode(uint8 TransceiverId,
+								 CanTrcv_TrcvModeType TransceiverMode)
+3- CanIf
+Std_ReturnType Can_SetControllerMode(uint8 Controller,
+									 Can_ControllerStateType Transition)
+Std_ReturnType CanTrcv_SetOpMode(uint8 Transceiver,
+								 CanTrcv_TrcvModeType OpMode)
+4- Can
+Request CAN controller mode transition to START.
+5- Can Trcv
+Std_ReturnType Dio_WriteChannel( uint8 Dio_ChannelType, 
+								 uint8 Dio_LevelType)
+--------------------------------------------------------------------------
+--> Can Tx Sequence
+1- Rte User
+uint8 Com_SendSignal( Com_SignalIdType SignalId,
+					  const void* SignalDataPtr)
+2- Com
+Std_ReturnType PduR_ComTransmit( PduIdType TxPduId,
+								 const PduInfoType* PduInfoPtr)
+3- PduR
+Std_ReturnType CanIf_Transmit( PduIdType TxPduId,
+							   const PduInfoType* PduInfoPtr)
+4- CanIf
+Std_ReturnType Can_Write( Can_HwHandleType Hth,
+						  const Can_PduType* PduInfo)
+5- Can
+Copy L-PDU into CAN Hardware.
+6- Os Task
+void Can_MainFunction_Write( void)
+--------------------------------------------------------------------------
+--> Can Rx Sequence (Pooling)
+1- Can
+void CanIf_RxIndication( const Can_HwType* Mailbox,
+						 const PduInfoType* PduInfoPtr)
+2- CanIf
+void PduR_ComRxIndication( PduIdType RxPduId,
+								 const PduInfoType* PduInfoPtr)
+3- PduR
+void Com_RxIndication( PduIdType RxPduId,
+					   const PduInfoType* PduInfoPtr)
+4- Com
+Copy buffer()
+5- Os Task
+void Can_MainFunction_Read( void)
+--------------------------------------------------------------------------
+--> Can Rx Sequence (Interrupt)
+1- CanController
+Receive Interrupt()
+2- Can
+void CanIf_RxIndication( const Can_HwType* Mailbox,
+						 const PduInfoType* PduInfoPtr)
+3- CanIf
+void PduR_ComRxIndication( PduIdType RxPduId,
+								 const PduInfoType* PduInfoPtr)
+4- PduR
+void Com_RxIndication( PduIdType RxPduId,
+					   const PduInfoType* PduInfoPtr)
+5- Com
+Copy buffer()
