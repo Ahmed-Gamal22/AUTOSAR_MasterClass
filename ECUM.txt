@@ -1,0 +1,21 @@
+StartPreOs Service:
+1- void EcuM_AL_SetProgrammableInterrupts (void)
+2- void EcuM_AL_DriverInitZero (void)
+3- const EcuM_ConfigType* EcuM_DeterminePbConfiguration (void)
+4- Check consistency of configuration data (if fails) invoke -> 
+	void EcuM_ErrorHook(uint16 reason=ECUM_E_CONFIGURATION_DATA_INCONSISTENT)
+5- void EcuM_AL_DriverInitOne (void)
+6- void Mcu_GetResetReason(Mcu_ResetType)
+7- void EcuM_SetWakeupEvent (EcuM_WakeupSourceType sources)
+7- void EcuM_LoopDetection (void)
+8- void StartOS(void)
+--------------------------------------------------------------------------
+OffPreOs Service:
+1- void EcuM_OnGoOffOne (void)
+2- void BswM_Deinit(void)
+3- void SchM_Deinit(void)
+4- EcuM_WakeupSourceType EcuM_GetPendingWakeupEvents (void)
+5- Std_ReturnType EcuM_SelectShutdownTarget ( 
+								EcuM_ShutdownTargetType shutdownTarget,
+								EcuM_ShutdownModeType shutdownMode)
+6- void ShutdownOS(void)
